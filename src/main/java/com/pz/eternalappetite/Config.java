@@ -13,7 +13,7 @@ public class Config {
     public static final ModConfigSpec.DoubleValue K;
 
     static {
-        K = BUILDER.comment("k值为饥饿值转换为饱和度的比例").defineInRange("K", 0.5, 1.0, 1.0);
+        K = BUILDER.comment("k值为饥饿值转换为饱和度的比例").defineInRange("K", 0.5, 0.0, 1.0);
         SPEC = BUILDER.build();
     }
 }
