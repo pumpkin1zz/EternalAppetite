@@ -1,7 +1,11 @@
 package com.pz.eternalappetite;
 
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
+import com.pz.eternalappetite.command.SaturationCommand;
 import net.minecraft.client.Minecraft;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -25,6 +29,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -44,11 +49,18 @@ public class EternalAppetite {
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public EternalAppetite(IEventBus modEventBus, ModContainer modContainer) {
 
-
-
-
          modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+         NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }
 
-
+    @SubscribeEvent
+    private void onRegisterCommands(RegisterCommandsEvent event) {
+        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+        dispatcher.register(Commands.literal("saturation")
+                .requires((commandSourceStack -> commandSourceStack.hasPermission(0)))
+                .requires((CommandSourceStack::isPlayer))
+                .executes(new SaturationCommand())
+        );
+    }
 }

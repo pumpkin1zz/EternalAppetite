@@ -1,5 +1,3 @@
 {
-  "itemGroup.eternalappetite": "Example Mod Tab",
-  "block.eternalappetite.example_block": "Example Block",
-  "item.eternalappetite.example_item": "Example Item"
+  "commands.saturation.current": "staturationLevel: %s"
 }
