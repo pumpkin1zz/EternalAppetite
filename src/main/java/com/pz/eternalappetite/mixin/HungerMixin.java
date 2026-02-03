@@ -34,7 +34,7 @@ public abstract class HungerMixin {
         int hunger1 = this.foodLevel + hunger;
         if (hunger1 > 20) this.overflow =(float)  (k * (hunger1 - 20));
         this.foodLevel = Mth.clamp(hunger1, 0, 20);
-        this.saturationLevel = Mth.clamp(this.saturationLevel + saturation + this.overflow, 0.0F, Float.MAX_VALUE);
+        this.saturationLevel = (float) Mth.clamp(this.saturationLevel + saturation + this.overflow, 0.0F, Config.MAX.get());
 
     }
 }

@@ -1,3 +1,6 @@
 {
-  "commands.saturation.current": "staturationLevel: %s"
+  "commands.saturation.current": "staturationLevel: %s",
+  "eternalappetite.config.k": "Proportion",
+  "eternalappetite.config.max": "Max value",
+  "eternalappetite.config.rgb": "Color"
 }

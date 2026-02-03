@@ -1,3 +1,6 @@
 {
-  "commands.saturation.current": "你当前饱和度为：%s"
+  "commands.saturation.current": "你当前饱和度为：%s",
+  "eternalappetite.config.k": "比例",
+  "eternalappetite.config.max": "最大值",
+  "eternalappetite.config.rgb": "颜色"
 }
