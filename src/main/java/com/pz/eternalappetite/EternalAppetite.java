@@ -4,7 +4,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.logging.LogUtils;
 import com.pz.eternalappetite.command.SaturationCommand;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +24,8 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
+
+import java.lang.reflect.Method;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(EternalAppetite.MODID)
@@ -59,16 +62,30 @@ public class EternalAppetite {
         public static void onRenderGuiOverlay(RenderGuiLayerEvent.Post event) {
             if (event.getName().equals(VanillaGuiLayers.FOOD_LEVEL)) {
                 Minecraft mc = Minecraft.getInstance();
-                int w = event.getGuiGraphics().guiWidth() / 2 + 100;
-                int h = event.getGuiGraphics().guiHeight() - 39;
+                GuiGraphics guiGraphics = event.getGuiGraphics();
+                int w = guiGraphics.guiWidth() / 2 + 100;
+                int h = guiGraphics.guiHeight() - 39;
 
                 int food = (int) (mc.player.getFoodData().getSaturationLevel() / 20);
                 boolean isMounted = mc.player.getVehicle() instanceof LivingEntity;
                 if (mc.gameMode.canHurtPlayer() && mc.getCameraEntity() instanceof Player && !isMounted) {
-                    LOGGER.info("渲染");
-                    event.getGuiGraphics().drawString(mc.font,  "x" + food, w, h,Config.RGB.get(),false);
+                    safeDrawString(guiGraphics , mc.font,  "x" + food, w, h,Config.RGB.get(),false);
                 }
             }
         }
+
+        private static void safeDrawString(GuiGraphics guiGraphics, Font font, String text, int x, int y, int color, boolean shadow) {
+            try {
+                Method method = GuiGraphics.class.getMethod("drawString", Font.class, String.class, int.class, int.class, int.class, boolean.class);
+                if (method.getReturnType() == int.class) {
+                    method.invoke(guiGraphics, font, text, x, y, color, shadow);
+                } else {
+                    guiGraphics.drawString(font, text, x, y, color, shadow);
+                }
+            } catch (Exception e) {
+                guiGraphics.drawString(font, text, x, y, color, shadow);
+            }
+        }
+
     }
 }
