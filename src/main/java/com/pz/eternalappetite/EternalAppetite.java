@@ -11,6 +11,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -28,7 +29,7 @@ import org.slf4j.Logger;
 import java.lang.reflect.Method;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(EternalAppetite.MODID)
+@Mod(value = EternalAppetite.MODID)
 public class EternalAppetite {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "eternalappetite";
@@ -42,8 +43,6 @@ public class EternalAppetite {
          modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
          NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
-
-        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
     @SubscribeEvent
